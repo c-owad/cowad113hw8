@@ -6,9 +6,13 @@ import hashlib
 USERS_FILE = 'users.json'
 
 def load_users():
+    # Phase 3: Fixes after AI review
     if os.path.exists(USERS_FILE):
-        with open(USERS_FILE, 'r') as f:
-            return json.load(f)
+        try:
+            with open(USERS_FILE, 'r') as f:
+                return json.load(f)
+        except json.JSONDecodeError:
+            raise ValueError("users.json is malformed.")
     return {}
 
 def save_users(users):

@@ -1,3 +1,4 @@
+# Phase 3: Fixes after AI review
 import json
 import random
 import auth
@@ -15,6 +16,34 @@ def load_questions():
         raise ValueError("questions.json file not found.")
     except json.JSONDecodeError:
         raise ValueError("questions.json is malformed.")
+
+def get_valid_int(prompt, min_val, max_val):
+    while True:
+        try:
+            val_str = input(prompt).strip()
+            if not val_str.isdigit():
+                raise ValueError("Invalid input. Please enter a number.")
+            val = int(val_str)
+            if min_val <= val <= max_val:
+                return val
+            else:
+                raise ValueError(f"Please enter a number between {min_val} and {max_val}.")
+        except ValueError as e:
+            print(f"Error: {e}")
+
+def get_valid_choice(prompt, options):
+    while True:
+        choice = input(prompt).strip().lower()
+        if choice in options:
+            return choice
+        print(f"Error: Invalid input. Please enter one of {options}.")
+
+def get_non_empty_input(prompt):
+    while True:
+        inp = input(prompt).strip()
+        if inp:
+            return inp
+        print("Error: Input cannot be empty.")
 
 def main():
     print("Welcome to the Python Quiz App!")
@@ -48,19 +77,7 @@ def main():
     total_questions = len(questions)
     
     # Ask number of questions
-    while True:
-        try:
-            num_str = input(f"How many questions do you want to answer? (1-{total_questions}): ").strip()
-            if not num_str.isdigit():
-                raise ValueError("Invalid input. Please enter a number.")
-            num_questions = int(num_str)
-            if 1 <= num_questions <= total_questions:
-                break
-            else:
-                raise ValueError(f"Please enter a number between 1 and {total_questions}.")
-        except ValueError as e:
-            print(f"Error: {e}")
-            continue
+    num_questions = get_valid_int(f"How many questions do you want to answer? (1-{total_questions}): ", 1, total_questions)
     
     # Select random questions
     selected_questions = random.sample(questions, num_questions)
@@ -76,43 +93,19 @@ def main():
         
         # Offer hint
         hint_used = False
-        while True:
-            hint_input = input("Do you want a hint? (y/n): ").strip().lower()
-            if hint_input in ['y', 'n']:
-                break
-            print("Error: Invalid input for hint. Please enter 'y' or 'n'.")
+        hint_input = get_valid_choice("Do you want a hint? (y/n): ", ['y', 'n'])
         if hint_input == 'y':
             print(f"Hint: {q['hint']}")
             hint_used = True
         
         # Get answer
         if q['type'] == 'multiple_choice':
-            while True:
-                try:
-                    ans_str = input("Your answer (number): ").strip()
-                    if not ans_str.isdigit():
-                        raise ValueError("Please enter a number.")
-                    ans_num = int(ans_str)
-                    if 1 <= ans_num <= len(q['options']):
-                        user_answer = q['options'][ans_num - 1]
-                        break
-                    else:
-                        raise ValueError("Invalid number.")
-                except ValueError as e:
-                    print(f"Error: {e}")
-                    continue
+            ans_num = get_valid_int("Your answer (number): ", 1, len(q['options']))
+            user_answer = q['options'][ans_num - 1]
         elif q['type'] == 'true_false':
-            while True:
-                user_answer = input("Your answer (true/false): ").strip().lower()
-                if user_answer in ['true', 'false']:
-                    break
-                print("Error: Please enter 'true' or 'false'.")
+            user_answer = get_valid_choice("Your answer (true/false): ", ['true', 'false'])
         else:  # short answer
-            while True:
-                user_answer = input("Your answer: ").strip()
-                if user_answer:
-                    break
-                print("Error: Answer cannot be empty.")
+            user_answer = get_non_empty_input("Your answer: ")
         
         # Check answer
         correct = user_answer == q['answer']

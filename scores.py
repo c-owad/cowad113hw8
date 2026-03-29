@@ -1,3 +1,4 @@
+# Phase 3: Fixes after AI review
 import pickle
 import os
 
@@ -5,8 +6,11 @@ SCORES_FILE = 'scores.pkl'
 
 def load_scores():
     if os.path.exists(SCORES_FILE):
-        with open(SCORES_FILE, 'rb') as f:
-            return pickle.load(f)
+        try:
+            with open(SCORES_FILE, 'rb') as f:
+                return pickle.load(f)
+        except Exception:
+            raise ValueError("scores.pkl is corrupted.")
     return {}
 
 def save_scores(scores):
