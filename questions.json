@@ -1,0 +1,46 @@
+{
+  "questions": [
+    {
+      "id": 101,
+      "question": "What is 10 // 3 in Python?",
+      "type": "multiple_choice",
+      "options": ["3.33", "3", "3.0", "1"],
+      "answer": "3",
+      "category": "Operations",
+      "hint": "// is integer division"
+    },
+    {
+      "id": 102,
+      "question": "A Python dictionary can have duplicate keys.",
+      "type": "true_false",
+      "answer": "false",
+      "category": "Dictionaries",
+      "hint": "would two of the same key have different hash values?"
+    },
+    {
+      "id": 103,
+      "question": "Which method is used to remove and return an element of a list?",
+      "type": "short answer",
+      "answer": "pop()",
+      "category": "Lists",
+      "hint": "remember to include (), because it's a method"
+    },
+    {
+      "id": 104,
+      "question": "What is the value of 'Python'[1:3]?",
+      "type": "multiple_choice",
+      "options": ["Py", "yt", "ytho", "yth"],
+      "answer": "yt",
+      "category": "Strings",
+      "hint": "Is the upper bound inclusive or exclusive?"
+    },
+    {
+      "id": 105,
+      "question": "5 in range(5)",
+      "type": "true_false",
+      "answer": "false",
+      "category": "Loops",
+      "hint": "is the range parameter inclusive or exclusive?"
+    }
+  ]
+}
